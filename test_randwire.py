@@ -5,24 +5,15 @@ import numpy as np
 import argparse
 from dataset import iter_utils
 
-# argument parser for options
-def args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--class_num', type=int, default=10, help='number of class')  # number of class
-    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint/best', help='directory for checkpoint')  # directory for checkpoint
-    parser.add_argument('--test_record_dir', type=str, default='./dataset/cifar10/test.tfrecord', help='directory for test record')  # directory for test images
-    parser.add_argument('--batch_size', type=int, default=256, help='number of images for each batch')  # number of images for each batch
-    args = parser.parse_args()
-
-    return args
-
 # main function for test
-def main(args):
-    print('+++++++++++++++++++++++++++++++++++++++++++++++++')
-    print('[Input Arguments]')
-    for arg in args.__dict__:
-        print(arg, '->', args.__dict__[arg])
-    print('+++++++++++++++++++++++++++++++++++++++++++++++++')
+def main():
+    args = argparse.ArgumentParser()
+    args.__dict__['class_num'] = 10
+    args.__dict__['checkpoint_dir'] = code_directory+'checkpoint_model{}'.format(2)
+    args.__dict__['checkpoint_dir'] = './checkpoint/best'
+    args.__dict__['test_record_dir'] = './dataset/cifar10/test.tfrecord'
+    args.__dict__['batch_size'] = 256
+
     with tf.Session() as sess:
         #restoring network and weight data
         try:
@@ -65,7 +56,5 @@ def main(args):
 
         print('test accuracy: ', (predictions / dataset_size) * 100, '%')
 
-
 if __name__ == '__main__':
-    args = args()
-    main(args)
+    main()
